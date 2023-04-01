@@ -1,10 +1,11 @@
 import { useRouter } from 'next/router'
 import React, { useState } from 'react'
 import { useConversations } from '../hooks/conversations'
-
 import { Loader } from '../components/Loader'
 import { Error } from '../components/Error'
 import { ConversationsList } from '../components/ConversationsList'
+import { MessagesFlow }  from '../components/MessagesFlow'
+import styles from '../styles/Messages.module.css'
 
 export default function Messages () {
     const router = useRouter()
@@ -19,10 +20,17 @@ export default function Messages () {
     if (isLoading) return <Loader/>
     if (error) return <Error error={error}/>
 
-    return <ConversationsList
-        conversations={conversations}
-        userName={router.query.name as string}
-        userId={userId}
-        onSelect={onSelect}
-    ></ConversationsList>
+    return <>
+        <div className={styles.welcome}>Welcome {router.query.name} </div>
+        <div className={styles.container}>
+            <ConversationsList
+                conversations={conversations}
+                userId={userId}
+                onSelect={onSelect}
+            />
+            <div className={styles.messages__container}>
+                {conversationId && <MessagesFlow conversationId={conversationId} userId={userId}></MessagesFlow>}
+            </div>
+        </div>
+    </>
 }

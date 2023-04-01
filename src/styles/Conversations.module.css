@@ -1,0 +1,28 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    flex-grow: 2;
+    min-width: 250px;
+    overflow-y: auto;
+    height: 100%;
+}
+
+.card {
+    height: 80px;
+    border: 1px solid #e3e1e1;
+    border-radius: 5px;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    cursor: pointer;
+}
+
+.selectedCard {
+    background-color: #f0eeee;
+}
+
+.card:hover {
+    background-color: #f0eeee;
+}

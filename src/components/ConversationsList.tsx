@@ -1,11 +1,10 @@
 import React, { useState } from 'react'
 import Image from 'next/image'
-import styles from '../styles/Messages.module.css'
+import styles from '../styles/Conversations.module.css'
 import userIcon from '../assets/user.png'
 import { Conversation } from '../types/conversation'
 
 interface Props {
-    userName: string;
     conversations: Conversation[];
     userId: string;
     onSelect: (id: string) => void;
@@ -13,7 +12,7 @@ interface Props {
 /* Memoize to avoid re-render each time a conversation is selected. */
 const MemoizedImage = React.memo(Image);
 
-export function ConversationsList ({ conversations, userName, userId, onSelect}: Props) {
+export function ConversationsList ({ conversations, userId, onSelect}: Props) {
     const [ conversationId, setConversationId ] = useState(undefined)
 
     const handleClick = (conversationId) => {
@@ -22,24 +21,23 @@ export function ConversationsList ({ conversations, userName, userId, onSelect}:
     }
 
     return <div className={styles.container}>
-        <div>Welcome {userName} </div>
-        {conversations?.map((conv) => {
-            const conversationTitle = conv.senderId === parseInt(userId, 10) ? conv.recipientNickname : conv.senderNickname
-            const date = new Date(conv.lastMessageTimestamp * 1000)
-            const formattedDate = date.toDateString()
-            const selected = conversationId === conv.id ? styles.selectedCard : '';
+            {conversations?.map((conv) => {
+                const conversationTitle = conv.senderId === parseInt(userId, 10) ? conv.recipientNickname : conv.senderNickname
+                const date = new Date(conv.lastMessageTimestamp * 1000)
+                const formattedDate = date.toDateString()
+                const selected = conversationId === conv.id ? styles.selectedCard : '';
 
-            return <div
-                className={[selected, styles.card].join(' ')}
-                key={conv.id}
-                onClick={() => { handleClick(conv.id) }}
-            >
-                <MemoizedImage src={userIcon} alt="User" width={40} height={40}/>
-                <div>
-                    <div>{conversationTitle}</div>
-                    <div>{formattedDate}</div>
+                return <div
+                    className={[selected, styles.card].join(' ')}
+                    key={conv.id}
+                    onClick={() => { handleClick(conv.id) }}
+                >
+                    <MemoizedImage src={userIcon} alt="User" width={40} height={40}/>
+                    <div>
+                        <div>{conversationTitle}</div>
+                        <div>{formattedDate}</div>
+                    </div>
                 </div>
-            </div>
-        })}
-    </div>
+            })}
+        </div>
 }

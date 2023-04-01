@@ -2,35 +2,20 @@
     height: 85vh;
     padding: 0 0.5rem;
     display: flex;
-    flex-direction: column;
-    gap: 15px;
-    padding: 4rem 4rem;
+    flex-direction: row;
+    gap: 30px;
+    padding: 2rem 4rem;
 }
 
-.card {
-    height: 80px;
+.messages__container {
+    display: flex;
+    flex-grow: 4;
     border: 1px solid #e3e1e1;
     border-radius: 5px;
-    padding: 10px;
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    cursor: pointer;
-}
+    position: relative;
+    min-width: 250px;
+ }
 
-.selectedCard {
-    background-color: #f0eeee;
+.welcome {
+    padding: 2rem 4rem;
 }
-
-.card:hover {
-    background-color: #f0eeee;
-}
-
-.main {
-    padding: 4rem 1rem;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-  }

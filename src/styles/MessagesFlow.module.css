@@ -1,0 +1,26 @@
+.container {
+    position: absolute;
+    bottom: 0px;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.message {
+    border-radius: 5px;
+    padding: 10px;
+    margin: 10px;
+    max-width: 65%;
+    background-color: grey;
+}
+
+.messageUserAuthor {
+    background-color: #aceec2;
+    align-self: flex-end;
+}
+
+.date {
+    font-size: 0.7em;
+    float: right;
+    margin-top: 10px;
+}
