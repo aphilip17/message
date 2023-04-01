@@ -1,17 +1,25 @@
-import React, { useState } from 'react'
-import { useUsers, MyError } from '../hooks/users'
+import React from 'react'
+import { useUsers } from '../hooks/users'
 import { Loader } from './Loader'
+import { useRouter } from 'next/router'
 
 interface User {
     id: string;
-    name: string;
+   name: string;
 }
 
 export function UserSelect () {
     const { users, isLoading, error } = useUsers()
+    const router = useRouter()
+
     const handleChange = function(event: React.ChangeEvent<HTMLSelectElement>) {
         const id = event.target.value;
-        const user = users!.find(user => user.id === parseInt(id, 10))
+        const user = users.find(user => user.id === parseInt(id, 10))
+
+        router.push({
+            pathname: '/messages',
+            query: {id: event.target.value, name: user!.nickname}
+        }, '/messages')
     }
 
     if (isLoading) return <Loader />
