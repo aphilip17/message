@@ -1,8 +1,8 @@
 import React from 'react'
 import { useUsers } from '../hooks/users'
 import { Loader } from './Loader'
+import { Error } from './Error'
 import { useRouter } from 'next/router'
-
 interface User {
     id: string;
    name: string;
@@ -18,20 +18,12 @@ export function UserSelect () {
 
         router.push({
             pathname: '/messages',
-            query: {id: event.target.value, name: user!.nickname}
+            query: {id: parseInt(event.target.value, 10), name: user!.nickname}
         }, '/messages')
     }
 
-    if (isLoading) return <Loader />
-    if (error) {
-        return <>
-            <div className="alert alert-warning" role="alert">
-                <h3>Error {error.status}</h3>
-                <div>{error.message}</div>
-                <div>{error.info.message}</div>
-            </div>
-        </>
-    }
+    if (isLoading) return <Loader/>
+    if (error) return <Error error={error}/>
 
     return <>
         <select
