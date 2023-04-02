@@ -5,8 +5,8 @@ import userIcon from '../assets/user.png'
 import { Conversation } from '../types/conversation'
 
 interface Props {
-    conversations: Conversation[];
-    userId: string;
+    conversations: Conversation[] | undefined;
+    userId: number;
     onSelect: (id: string) => void;
 }
 /* Memoize to avoid re-render each time a conversation is selected. */
@@ -22,7 +22,7 @@ export function ConversationsList ({ conversations, userId, onSelect}: Props) {
 
     return <div className={styles.container}>
             {conversations?.map((conv) => {
-                const conversationTitle = conv.senderId === parseInt(userId, 10) ? conv.recipientNickname : conv.senderNickname
+                const conversationTitle = conv.senderId === userId ? conv.recipientNickname : conv.senderNickname
                 const date = new Date(conv.lastMessageTimestamp * 1000)
                 const formattedDate = date.toDateString()
                 const selected = conversationId === conv.id ? styles.selectedCard : '';

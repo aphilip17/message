@@ -15,14 +15,19 @@ export class MyError extends Error {
     }
 }
 
-export const fetcher = async (url: string) => {
-    const res = await fetch(url, {
-        credentials: 'include',
+export const fetcher = async (url: string, arg?: any, options?: any) => {
+
+    const fetchOptions = {
+        credentials: 'include' as RequestCredentials,
         headers: {
-            Accept: 'application/json'
+            Accept: 'application/json',
+            'Content-Type': 'application/json'
         },
-        method: 'GET',
-    })
+        method: options?.method || 'GET',
+        body: arg ? JSON.stringify(arg.arg) : undefined,
+    }
+
+    const res = await fetch(url, fetchOptions)
 
     if (!res.ok) {
         const info = await res.json()

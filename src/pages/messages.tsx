@@ -1,5 +1,5 @@
+import React, { useState, useRef } from 'react'
 import { useRouter } from 'next/router'
-import React, { useState } from 'react'
 import { useConversations } from '../hooks/conversations'
 import { Loader } from '../components/Loader'
 import { Error } from '../components/Error'
@@ -9,9 +9,10 @@ import styles from '../styles/Messages.module.css'
 
 export default function Messages () {
     const router = useRouter()
-    const userId = router.query.id as string
+    const userId = parseInt(router.query.id as string, 10)
     const { conversations, isLoading, error } = useConversations(userId)
     const [ conversationId, setConversationId ] = useState(undefined)
+    const bottomRef = useRef<HTMLDivElement>(null);
 
     const onSelect = (conversationId) => {
         setConversationId(conversationId);
@@ -29,7 +30,11 @@ export default function Messages () {
                 onSelect={onSelect}
             />
             <div className={styles.messages__container}>
-                {conversationId && <MessagesFlow conversationId={conversationId} userId={userId}></MessagesFlow>}
+                {conversationId &&
+                <MessagesFlow
+                    conversationId={conversationId}
+                    userId={userId}
+                />}
             </div>
         </div>
     </>
