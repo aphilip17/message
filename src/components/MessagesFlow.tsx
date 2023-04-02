@@ -1,16 +1,21 @@
 import React, { useEffect, useRef, useState } from 'react'
 import styles from '../styles/MessagesFlow.module.css'
 import { useMessages, UsePostMessage } from '../hooks/messages'
-
+import Image from 'next/image'
+import userIcon from '../assets/user.png'
+import backIcon from '../assets/back.png'
 interface Props {
     conversationId: number;
     userId: number;
+    friendName: string;
+    handleBackClickForMobile: () => void
 }
 
-export function MessagesFlow ({conversationId, userId}: Props) {
+export function MessagesFlow ({conversationId, userId, friendName, handleBackClickForMobile}: Props) {
     const { messages, isLoading, error } = useMessages(conversationId)
     const {trigger, isMutating} = UsePostMessage(conversationId)
     const [message, setMessage] = useState('')
+    const [hideMessages, setHideMessages] = useState(false)
     const bottomRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -33,7 +38,17 @@ export function MessagesFlow ({conversationId, userId}: Props) {
         setMessage('')
     };
 
-    return <div className={styles.container} ref={bottomRef}>
+    const handleBackClick = () => {
+        handleBackClickForMobile()
+    }
+
+    return <>
+        <div className={styles.header}>
+            <Image className={styles.back} src={backIcon} alt="Back" width={30} height={30} onClick={handleBackClick}/>
+            <Image src={userIcon} alt="User" width={40} height={40}/>
+            {friendName}
+        </div>
+        <div className={styles.container} ref={bottomRef}>
         {messages?.map((mess) => {
             const isUserAuthor = mess.authorId === userId ? styles.messageUserAuthor : ''
             const date = new Date(mess.timestamp * 1000)
@@ -47,11 +62,13 @@ export function MessagesFlow ({conversationId, userId}: Props) {
                 </div>
             </div>
         })}
-        <div className={styles.textarea}>
-            <form>
-                <textarea value={message} onChange={(e) => setMessage(e.target.value)} />
-                <button className="btn btn-primary" disabled={isMutating} onClick={onSubmit}>Submit</button>
-            </form>
-        </div>
+
     </div>
+    <div className={styles.textarea}>
+        <form>
+            <textarea value={message} onChange={(e) => setMessage(e.target.value)} />
+            <button className="btn btn-primary" disabled={isMutating} onClick={onSubmit}>Submit</button>
+        </form>
+    </div>
+    </>
 }
