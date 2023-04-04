@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react'
+import React, { ReactElement, useEffect } from 'react'
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
 import { UserSelect } from '../components/UserSelect'
@@ -6,6 +6,10 @@ import { UserSelect } from '../components/UserSelect'
 const Home = ():ReactElement => {
 
     const year = new Date().getFullYear()
+
+    useEffect(() => {
+        localStorage.clear()
+    })
 
     return (
         <div className={styles.container}>

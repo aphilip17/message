@@ -6,7 +6,6 @@ import { useEffect } from 'react'
 
 // Default way to get a logged user
 export const loggedUserId = getLoggedUserId()
-console.log(loggedUserId)
 
 function MyApp({ Component, pageProps }: AppProps) {
     useEffect(() => {

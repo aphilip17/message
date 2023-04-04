@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 import Image from 'next/image'
 import styles from '../styles/Conversations.module.css'
 import userIcon from '../assets/user.png'
@@ -7,37 +7,67 @@ import { Conversation } from '../types/conversation'
 interface Props {
     conversations: Conversation[] | undefined;
     userId: number;
-    onSelect: (id: string, friendName: string) => void;
+    handleSelect: (id: number, friendName: string) => void;
+}
+
+export function ConversationsList ({ conversations, userId, handleSelect}: Props) {
+    const [ conversationState, setConversation ] = useState(undefined)
+
+    const onSelect = (conversationId, friendName) => {
+        setConversation(conversationId)
+        handleSelect(conversationId, friendName)
+    }
+
+    return (
+        <div className={styles.container}>
+            {conversations?.map((conv) => {
+               return (
+                    <MemoizedConv
+                        key={conv.id}
+                        conversation={conv}
+                        userId={userId}
+                        selected={conversationState === conv.id}
+                        onSelect={onSelect}
+                    />
+                )
+            })}
+        </div>
+    )
+}
+interface ConversationProps {
+    conversation: Conversation;
+    userId: number;
+    selected: boolean;
+    onSelect: (id: number, friendName: string) => void;
 }
 /* Memoize to avoid re-render each time a conversation is selected. */
 const MemoizedImage = React.memo(Image);
+const MemoizedConv = React.memo(Conversation);
 
-export function ConversationsList ({ conversations, userId, onSelect}: Props) {
-    const [ conversationId, setConversationId ] = useState(undefined)
+export function Conversation ({conversation, userId, selected, onSelect}: ConversationProps) {
+    const friendName = conversation.senderId === userId
+                     ? conversation.recipientNickname
+                     : conversation.senderNickname
+    const selectedClass = selected ? styles.selectedCard : null
 
-    const handleClick = (conversationId, friendName) => {
-        setConversationId(conversationId)
-        onSelect(conversationId, friendName)
+    const handleClick = () => {
+        onSelect(conversation.id, friendName)
     }
 
-    return <div className={styles.container}>
-            {conversations?.map((conv) => {
-                const friendName = conv.senderId === userId ? conv.recipientNickname : conv.senderNickname
-                const date = new Date(conv.lastMessageTimestamp * 1000)
-                const formattedDate = date.toDateString()
-                const selected = conversationId === conv.id ? styles.selectedCard : '';
-
-                return <div
-                    className={[selected, styles.card].join(' ')}
-                    key={conv.id}
-                    onClick={() => { handleClick(conv.id, friendName) }}
-                >
-                    <MemoizedImage src={userIcon} alt="User" width={40} height={40}/>
-                    <div>
-                        <div>{friendName}</div>
-                        <div>{formattedDate}</div>
-                    </div>
-                </div>
-            })}
+    return (
+         <div
+            className={[styles.card, selectedClass].join(' ')}
+            onClick={handleClick}
+        >
+            <MemoizedImage
+                src={userIcon}
+                alt='User'
+                width={40}
+                height={40}
+            />
+        <div>
+            <div>{friendName}</div>
         </div>
+        </div>
+    )
 }

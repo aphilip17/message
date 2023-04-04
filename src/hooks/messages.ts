@@ -18,7 +18,7 @@ export function useMessages(conversationId: number) {
 
 export function UsePostMessage(conversationId: number) {
     const { trigger, isMutating }  = useSWRMutation('http://localhost:3005/messages/' + conversationId,
-                                                    (url, options) => fetcher(url, options, {method: 'POST'}))
+                                                    (url, options) => fetcher(url, options, { method: 'POST' }))
 
     return {
         trigger,

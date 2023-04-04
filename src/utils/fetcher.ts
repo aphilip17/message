@@ -9,13 +9,13 @@ export class MyError extends Error {
     info: InfoMessage;
 
     constructor(message: string, status: number, info: InfoMessage) {
-        super(message);
-        this.status = status;
-        this.info = info;
+        super(message)
+        this.status = status
+        this.info = info
     }
 }
 
-export const fetcher = async (url: string, arg?: any, options?: any) => {
+export const fetcher = async (url: string, arg?: { arg: { arg: any }}, options?: { method: string }) => {
 
     const fetchOptions = {
         credentials: 'include' as RequestCredentials,
@@ -37,7 +37,7 @@ export const fetcher = async (url: string, arg?: any, options?: any) => {
         throw error
     }
 
-    const data = await res.json();
+    const data = await res.json()
 
-    return data;
+    return data
 }

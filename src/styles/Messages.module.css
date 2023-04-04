@@ -1,6 +1,5 @@
 .container {
     height: 85vh;
-    padding: 0 0.5rem;
     display: flex;
     flex-direction: row;
     gap: 30px;
@@ -15,10 +14,12 @@
     position: relative;
     min-width: 250px;
     flex-direction: column;
+    width: 400px;
 }
 
 .welcome {
-    padding: 2rem 4rem;
+    margin-top: 2em;
+    margin-left: 4em;
 }
 
 @media only screen and (max-width: 768px)  {
