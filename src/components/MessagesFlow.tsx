@@ -73,6 +73,7 @@ export function MessagesFlow ({ conversationId, userId, friendName, handleBackCl
             <div
                 className={styles.container}
                 ref={bottomRef}
+                tabIndex={0}
             >
                 {messages?.map((message) => {
                     return <Message

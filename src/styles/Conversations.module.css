@@ -23,6 +23,8 @@
     background-color: #f0eeee;
 }
 
-.card:hover {
+.card:hover,
+.card:focus,
+.card:active  {
     background-color: #f0eeee;
 }

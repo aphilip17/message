@@ -67,6 +67,8 @@ export function Conversation ({conversation, userId, onSelect}: ConversationProp
          <div
             className={styles.card}
             onClick={handleClick}
+            onKeyPress={handleClick}
+            tabIndex={0}
         >
             <MemoizedImage
                 src={userIcon}

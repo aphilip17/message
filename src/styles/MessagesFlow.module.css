@@ -16,7 +16,7 @@
     display: flex;
     flex-direction: column;
     gap: 6px;
-    word-break: break-all;
+    overflow-wrap: break-word;
 }
 
 .message:first-child {
@@ -34,7 +34,7 @@
 }
 
 .textarea {
-    background-color: #f0eeee;
+    background-color: #f6f6f6;
     margin-top: auto;
     padding-right: 12px;
 }
@@ -54,7 +54,7 @@
 
 .header {
     width: 100%;
-    background-color: #f0eeee;
+    background-color: #f6f6f6;
     z-index: 1000;
     display: flex;
     align-items: center;
