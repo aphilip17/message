@@ -15,6 +15,8 @@ interface Props {
     handleBackClickForMobile: () => void
 }
 
+const MemoizedImage = React.memo(Image)
+
 export function MessagesFlow ({ conversationId, userId, friendName, handleBackClickForMobile }: Props) {
     /* Hooks */
     const { messages, isLoading, error } = useMessages(conversationId)
@@ -46,8 +48,6 @@ export function MessagesFlow ({ conversationId, userId, friendName, handleBackCl
     const handleBackClick = () => {
         handleBackClickForMobile()
     }
-
-    const MemoizedImage = React.memo(Image);
 
     if (isLoading) return <Loader/>
     if (error) return <Error error={error}/>

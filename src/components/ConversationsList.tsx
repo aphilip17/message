@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import Image from 'next/image'
 import styles from '../styles/Conversations.module.css'
 import userIcon from '../assets/user.png'
@@ -11,22 +11,33 @@ interface Props {
 }
 
 export function ConversationsList ({ conversations, userId, handleSelect}: Props) {
-    const [ conversationState, setConversation ] = useState(undefined)
+    const [ htmlConversation, setHtmlConversation ] = useState<HTMLElement | undefined>(undefined)
+    const prevCountRef = useRef<HTMLElement | undefined>()
 
-    const onSelect = (conversationId, friendName) => {
-        setConversation(conversationId)
+    useEffect(() => {
+        if (prevCountRef.current) (
+            (prevCountRef.current).classList.remove(styles.selectedCard)
+        )
+        prevCountRef.current = htmlConversation
+
+    }, [htmlConversation])
+
+    const onSelect = useCallback((conversationId, friendName, elem) => {
+        /* Manipule Dom to avoid re-render all elem of the list. */
+        setHtmlConversation(elem)
+        elem.classList.add(styles.selectedCard)
+
         handleSelect(conversationId, friendName)
-    }
+    }, [handleSelect])
 
     return (
         <div className={styles.container}>
             {conversations?.map((conv) => {
-               return (
+                return (
                     <MemoizedConv
                         key={conv.id}
                         conversation={conv}
                         userId={userId}
-                        selected={conversationState === conv.id}
                         onSelect={onSelect}
                     />
                 )
@@ -37,26 +48,24 @@ export function ConversationsList ({ conversations, userId, handleSelect}: Props
 interface ConversationProps {
     conversation: Conversation;
     userId: number;
-    selected: boolean;
-    onSelect: (id: number, friendName: string) => void;
+    onSelect: (id: number, friendName: string, elem: HTMLElement) => void;
 }
 /* Memoize to avoid re-render each time a conversation is selected. */
-const MemoizedImage = React.memo(Image);
-const MemoizedConv = React.memo(Conversation);
+const MemoizedImage = React.memo(Image)
+const MemoizedConv = React.memo(Conversation)
 
-export function Conversation ({conversation, userId, selected, onSelect}: ConversationProps) {
+export function Conversation ({conversation, userId, onSelect}: ConversationProps) {
     const friendName = conversation.senderId === userId
                      ? conversation.recipientNickname
                      : conversation.senderNickname
-    const selectedClass = selected ? styles.selectedCard : null
 
-    const handleClick = () => {
-        onSelect(conversation.id, friendName)
+    const handleClick = (e) => {
+        onSelect(conversation.id, friendName, e.currentTarget)
     }
 
     return (
          <div
-            className={[styles.card, selectedClass].join(' ')}
+            className={styles.card}
             onClick={handleClick}
         >
             <MemoizedImage
@@ -65,9 +74,8 @@ export function Conversation ({conversation, userId, selected, onSelect}: Conver
                 width={40}
                 height={40}
             />
-        <div>
-            <div>{friendName}</div>
-        </div>
-        </div>
+
+        <div>{friendName}</div>
+    </div>
     )
 }
