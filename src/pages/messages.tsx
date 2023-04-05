@@ -7,6 +7,7 @@ import { ConversationsList } from '../components/ConversationsList'
 import { MessagesFlow }  from '../components/MessagesFlow'
 import styles from '../styles/Messages.module.css'
 import { Conversation } from '../types/conversation'
+import { BlobOptions } from 'buffer'
 
 const MemoizedConversationsList = React.memo(ConversationsList);
 
@@ -27,7 +28,7 @@ export default function Messages () {
      *  Click on back icon display list of conversations
      *  Click on a conversation display messages
      **/
-    const [ hideMessagesForMobileOnly, sethideMessagesForMobile ] = useState(false)
+    const [ hideMessagesForMobileOnly, sethideMessagesForMobile ] = useState<boolean | undefined>(undefined)
 
     /* Hooks */
     const { conversations, isLoading, error } = useConversations(userIdRouter)
@@ -39,7 +40,7 @@ export default function Messages () {
     }, [])
 
     const handleBackClickForMobile = () => {
-        sethideMessagesForMobile(true);
+        sethideMessagesForMobile(true)
     }
 
     useEffect(() => {
@@ -79,6 +80,15 @@ export default function Messages () {
             setConversations(JSON.parse(localStorage.getItem('conversations')))
         }
     }, [conversations])
+
+    useEffect(() => {
+        if (hideMessagesForMobileOnly === undefined) {
+            sethideMessagesForMobile(JSON.parse(localStorage.getItem('hideMessagesForMobileOnly')))
+        } else  {
+            sethideMessagesForMobile(hideMessagesForMobileOnly)
+            localStorage.setItem('hideMessagesForMobileOnly', JSON.stringify(hideMessagesForMobileOnly))
+        }
+    }, [hideMessagesForMobileOnly])
 
     useEffect(() => {
         const handleResize = (evt) => {
