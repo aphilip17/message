@@ -33,6 +33,17 @@
     align-self: end;
 }
 
+.datetitle {
+    margin: auto;
+    border-radius: 5px;
+    padding: 6px 10px;
+    display: flex;
+    align-items: center;
+    background-color: #d3d3d3;
+    font-size: 12px;
+    margin-bottom: 0px;
+}
+
 .textarea {
     background-color: #f6f6f6;
     margin-top: auto;

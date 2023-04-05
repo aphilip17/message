@@ -25,6 +25,8 @@ export function MessagesFlow ({ conversationId, userId, friendName, handleBackCl
     const [ message, setMessage ] = useState('')
     const bottomRef = useRef<HTMLDivElement>(null);
 
+    const dateTitleList = new Set()
+
     useEffect(() => {
         bottomRef.current?.lastElementChild?.scrollIntoView();
     }, [conversationId, message, messages]);
@@ -52,6 +54,16 @@ export function MessagesFlow ({ conversationId, userId, friendName, handleBackCl
     if (isLoading) return <Loader/>
     if (error) return <Error error={error}/>
 
+    const messagesNodes = []
+    {Object.entries(messages).forEach(([key, value]) => {
+        messagesNodes.push(<MessagesSorted
+            key={key}
+            dateTitle={key}
+            messageSorted={value as Array<Date>}
+            userId={userId}
+        />)
+    })}
+
     return (
         <>
             <div className={styles.header}>
@@ -75,13 +87,7 @@ export function MessagesFlow ({ conversationId, userId, friendName, handleBackCl
                 ref={bottomRef}
                 tabIndex={0}
             >
-                {messages?.map((message) => {
-                    return <Message
-                        key={message.id}
-                        message={message}
-                        userId={userId}
-                    />
-                })}
+            {messagesNodes}
 
             </div>
             <div className={styles.textarea}>
@@ -101,6 +107,27 @@ export function MessagesFlow ({ conversationId, userId, friendName, handleBackCl
                 </form>
             </div>
 
+        </>
+    )
+}
+
+interface MessagesSortedProps {
+    dateTitle: string;
+    messageSorted: Date[];
+    userId: number;
+}
+
+function MessagesSorted({ dateTitle, messageSorted, userId }: MessagesSortedProps) {
+    return (
+        <>
+            <div className={styles.datetitle}>{dateTitle}</div>
+            {messageSorted?.map((message, idx) => {
+                return <Message
+                    key={idx}
+                    message={message}
+                    userId={userId}
+                />
+            })}
         </>
     )
 }
