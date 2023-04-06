@@ -1,71 +1,36 @@
-# Context :
+# Architecture :
 
-At leboncoin, our users can share messages about a transaction, or ask for informations about any products.
+First I use the home page to display the list of users. That's allow to
+simulate an authentification with one user. It would be better to have a real authentication page.
 
-Your job is to create the interface to consult those messages.
-The interface needs to work on both desktop & mobile devices.
+One a user is choosen we are redirect on a new page: the "messages" page which contains the main
+component: "Messages".
+"Messages" contains two components: "ConversationsList" and "MessagesFlow" components.
+It takes care of passing data between components.
 
-In addition to your code, a README explaining your thought process and your choices would be appreciated.
+# UI :
 
-# Exercise :
+I choose a very simple UI like in others app chat: list of conversations on the left and messages on the right.
 
-- Display a list of all the conversations
-- Allow the user to select a conversation
-  - Inside the conversation, there is a list of all the messages between these two users.
-  - As a user, you can type and send new messages in this conversation
+When page is resized and its width become inferior to 768px the layout of the app changes. This way it is easier to use it on small devices.
 
-**As your application can be used by millions of users, make sure to provide some robust safety guards.**
+# Data storage :
 
-### Sketches :
+I used localStorage to store states. (for example if page is reloaded)
 
-Obvisouly, it is up to you to make something nice and pretty, you are free to design it the way you like. The sketches are here to give you an idea on how it should look.
+# Error and loader :
 
-<details>
-  <summary>Click to see the sketches</summary>
-  
-Mobile list :
+I handle server errors: errors are displayed in the page in a "card" to inform users.
+I add a spinner if data take time to query.
 
-![](./sketches/list-mobile.jpg)
+# Accessibility :
 
-Desktop list :
+I tried to make the app as accessible as possible. It is possible to do everything with the keyboard. Text color and background are choosen to be easily read.
 
-![](./sketches/list-desktop.jpg)
+# Performances :
 
-Mobile conversation :
+I tried to be carreful to not re-render components when it is not nessassary.
 
-![](./sketches/conv-mobile.jpg)
+# Test Jest:
 
-Desktop conversation :
-
-![](./sketches/conv-desktop.jpg)
-
-</details>
-
-### API :
-
-You can find the API swagger file in `docs/api-swagger.yaml`.
-
-For a better readibility, you can view it on [https://leboncoin.tech/frontend-technical-test/](https://leboncoin.tech/frontend-technical-test/).
-
----
-
-## Bonus 1 :
-
-We provide some conversation samples, but can you improve the app so the user can now create new conversations ?
-
-## Bonus 2 :
-
-Our infrastructure is a bit shaky.. Sometimes the servers are crashing. “It’s not you, it’s me”, but maybe you can display something nice to warn the user and handle it gracefully.
-
-## Do you want to make the app even better ?
-
-Feel free to make as many improvements as you like.
-We love creativity and technical challenges.
-
-If you are out of ideas, here are some thoughts :
-
-- As we want to reach our users anywhere, we need to make sure the app is performing well. What can you do to make it really fast ?
-
-- Our goal is to support everybody in the country, including people with disabilities. As a good citizen and a good developer, can you make sure the app is accessible for everyone ?
-
-- We all love to relax after a hard day’s work. It would be a shame if we didn’t feel confident enough about the upcoming automatic deployment. Are you sure everything has been tested thoroughly ?
+I added some tests to test each components.
